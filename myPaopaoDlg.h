@@ -12,7 +12,7 @@
 // CMyPaopaoDlg dialog
 
 #include "Paopao.h"
-#define NUMOFPAOPAO 60
+#define NUMOFPAOPAO 66
 
 class CMyPaopaoDlg : public CDialog
 {
@@ -77,6 +77,7 @@ public:
 	afx_msg void OnInitMenuPopup(CMenu *pPopupMenu, UINT nIndex, BOOL bSysMenu);
 	afx_msg void OnRandSport();
 	afx_msg void OnHuanraoSport();
+	afx_msg void OnArcSport();
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -179,6 +179,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "随机运动",                        ID_RAND_SPORT
         MENUITEM "环绕运动",                        ID_HUANRAO_SPORT
+        MENUITEM "弧度运动",                        ID_ARC_SPORT
         MENUITEM "退出",                          ID_EXIT
     END
 END

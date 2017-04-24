@@ -104,6 +104,7 @@ BEGIN_MESSAGE_MAP(CMyPaopaoDlg, CDialog)
 	ON_WM_INITMENUPOPUP()
 	ON_COMMAND(ID_RAND_SPORT, &CMyPaopaoDlg::OnRandSport)
 	ON_COMMAND(ID_HUANRAO_SPORT, &CMyPaopaoDlg::OnHuanraoSport)
+	ON_COMMAND(ID_ARC_SPORT, &CMyPaopaoDlg::OnArcSport)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -199,16 +200,18 @@ void CMyPaopaoDlg::OnPaint()
 		{      
 			switch(nSportStyle){
 			case 0:
+				//随机
 				 paopao[nCount].Run(rc);
 				break;
 
 			case 1:
+				//圆形
 				paopao[nCount].RunCircle(rc);
 				break;
 
 			case 2:
-				//碰撞
-
+				//弧度
+				paopao[nCount].RunSin(rc, 45.0 / 180 * PAI, PAI);
 				break;
 			}
            
@@ -253,17 +256,17 @@ void CMyPaopaoDlg::AddRandPaopao(int nNumOfPaopao){
 
 			CPaopao newPaopao(xPos,yPos,r,nx,ny,color);
 			newPaopao.SetBitmapID(IDB_BITMAP1);
-			int dx = (xPos - rc.CenterPoint().x);
-			int dy = (yPos - rc.CenterPoint().y);
+			//int dx = (xPos - rc.CenterPoint().x);
+			//int dy = (rc.CenterPoint().y - yPos);//折合成坐标 
  
 			newPaopao.rRadius=newPaopao.Distance(rc.CenterPoint(), CPoint(xPos, yPos));
 
-			float angle = asin((double)dy / newPaopao.rRadius);
+			//float angle = asin((double)dy / newPaopao.rRadius);
 
-			if (dx < 0)
-				angle = PAI - angle;
+			//if (dx < 0)
+			//	angle = PAI - angle;
 
-			newPaopao.fAngle = angle;
+			newPaopao.fAngle = newPaopao.GetAngle(rc.CenterPoint(), CPoint(xPos,yPos));
 
 			paopao[m_nCount]=newPaopao;
 			m_nCount++;
@@ -293,17 +296,17 @@ void CMyPaopaoDlg::AddRandPaopao(CPoint point, int nNumOfPaopao){
 			CPaopao newPaopao(xPos,yPos,r,nx,ny,color);
 			newPaopao.SetBitmapID(IDB_BITMAP1);
 
-			int dx = (xPos - rc.CenterPoint().x);
-			int dy = (yPos - rc.CenterPoint().y);
+			//int dx = (xPos - rc.CenterPoint().x);
+			//int dy = (rc.CenterPoint().y - yPos);//折合成坐标 
 
+			//
+			newPaopao.rRadius = newPaopao.Distance(rc.CenterPoint(), point);
+			//float angle = asin((double)dy / newPaopao.rRadius);
+
+			//if (dx < 0)
+			//	angle = PAI - angle;
 			
-			newPaopao.rRadius=newPaopao.Distance(rc.CenterPoint(), CPoint(xPos, yPos));
-			float angle = asin((double)dy / newPaopao.rRadius);
-
-			if (dx < 0)
-				angle = PAI - angle;
-
-			newPaopao.fAngle = angle;
+			newPaopao.fAngle = newPaopao.GetAngle(rc.CenterPoint(), point);
 
 			paopao[m_nCount]=newPaopao;
 			m_nCount++;
@@ -524,4 +527,11 @@ void CMyPaopaoDlg::OnHuanraoSport()
 	// TODO: 在此添加命令处理程序代码
 
 	nSportStyle=1;
+}
+
+
+void CMyPaopaoDlg::OnArcSport()
+{
+	// TODO: 在此添加命令处理程序代码
+	nSportStyle=2;
 }

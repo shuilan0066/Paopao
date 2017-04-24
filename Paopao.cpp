@@ -8,7 +8,7 @@ CPaopao::CPaopao()
 	  ny=0;
 	  fAngle = 0;
 	  rRadius=0;
-
+	  bAdd = TRUE;
 	  color=RGB(0,0,0);
 
 }
@@ -109,6 +109,35 @@ void CPaopao::SetBitmapID(short nBitmapID){
 
    }
 
+   void CPaopao::RunSin(CRect clientRc, float fStartAngle, float fEndAngle)//正弦运动
+   {
+	  
+	   CPoint ptCenter = clientRc.CenterPoint();
+	   CPoint ptPaoPaoCenter = rc.CenterPoint();
+
+	   //   int nRadius =Distance(ptCenter, ptPaoPaoCenter);
+	   long x = ptCenter.x + rRadius*cos(fAngle);
+	   long y = ptCenter.y - rRadius*sin(fAngle);//折合成坐标  
+
+	   rc.OffsetRect( x-ptPaoPaoCenter.x,  y-ptPaoPaoCenter.y);
+
+	   if (bAdd)
+		   fAngle += 0.1;
+	   else
+		   fAngle -= 0.1;
+
+
+	   if (fAngle>fEndAngle)
+		   bAdd = FALSE;
+
+	   if (fAngle<fStartAngle)
+		   bAdd = TRUE;
+
+
+
+   }
+
+
    void CPaopao::RunCircle(CRect clientRc){
 
 	   CPoint ptCenter = clientRc.CenterPoint();
@@ -116,7 +145,7 @@ void CPaopao::SetBitmapID(short nBitmapID){
 
 	//   int nRadius =Distance(ptCenter, ptPaoPaoCenter);
 	   long x = ptCenter.x + rRadius*cos(fAngle);
-	   long y = ptCenter.y + rRadius*sin(fAngle);
+	   long y = ptCenter.y - rRadius*sin(fAngle);
 
 	   rc.OffsetRect(x-ptPaoPaoCenter.x, y-ptPaoPaoCenter.y );
 	   fAngle += 0.03;
@@ -127,6 +156,19 @@ void CPaopao::SetBitmapID(short nBitmapID){
 	   return sqrt((pt1.x - pt2.x)*(pt1.x - pt2.x)*1.0 + (pt1.y - pt2.y)*(pt1.y - pt2.y));
    }
 
+
+   float CPaopao::GetAngle(CPoint centerPoint, CPoint pt){
+	   int dx = (pt.x - centerPoint.x);
+	   int dy = (centerPoint.y - pt.y);//折合成坐标 
+
+	   float rRadius = Distance(centerPoint, pt);
+	   float angle = asin((double)dy / rRadius);
+
+	   if (dx < 0)
+		   angle = PAI - angle;
+
+	   return angle;
+   }
 CPaopao::~CPaopao(void)
 {
 }
